@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introducción a Python 🐍</title>
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚚</text></svg>">
+</head>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --blue:#3a8fcb;--blue2:#256fa8;--blue-light:#e6f2ff;
+  --green:#2da55a;--green2:#1e8044;--green-light:#e6f9ee;
+  --purple:#7c5cbf;--purple-light:#f2eeff;
+  --orange:#e07820;--orange-light:#fff4e6;
+  --yellow:#f5b800;--yellow-light:#fffbe6;
+  --coral:#e04040;--coral-light:#fff0f0;
+  --teal:#0a8070;--teal-light:#e0f8f4;
+  --card:#fff;--text:#1a2340;--muted:#5a6a88;
+  --bg1:#d0eaff;--bg2:#e8f9ef;--bg3:#fff8dc;
+}
+body{font-family:'Nunito',sans-serif;background:linear-gradient(160deg,var(--bg1) 0%,var(--bg2) 50%,var(--bg3) 100%);min-height:100vh;color:var(--text)}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+
+/* ── HEADER ── */
+.hdr{background:linear-gradient(135deg,#3a8fcb,#256fa8);padding:18px 24px;display:flex;align-items:center;gap:16px;box-shadow:0 4px 18px rgba(58,143,203,.3)}
+.hdr-icon{width:56px;height:56px;border-radius:16px;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0}
+.hdr h1{font-family:'Fredoka One',cursive;font-size:clamp(1.4rem,4vw,2rem);color:white;letter-spacing:.5px}
+.hdr p{color:rgba(255,255,255,.85);font-size:.9rem;margin-top:2px}
+.voice-bar{background:rgba(255,255,255,.15);border-radius:12px;padding:6px 14px;margin-top:8px;display:inline-flex;align-items:center;gap:8px;font-size:.82rem;color:white;cursor:pointer;border:1px solid rgba(255,255,255,.3)}
+.voice-bar:hover{background:rgba(255,255,255,.25)}
+.vdot{width:8px;height:8px;border-radius:50%;background:#7effa0;animation:pulse 1.4s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+
+/* ── PROGRESS ── */
+.prog-wrap{background:white;border-radius:20px;padding:16px 20px;margin:16px 16px 0;box-shadow:0 2px 12px rgba(0,0,0,.08);display:flex;align-items:center;gap:14px}
+.prog-stars{font-size:1.5rem;letter-spacing:2px}
+.prog-bar-bg{flex:1;height:18px;border-radius:50px;background:#e0eaf5;overflow:hidden}
+.prog-bar-fill{height:100%;width:0%;border-radius:50px;background:linear-gradient(90deg,#2da55a,#5dd88a);transition:.5s}
+.prog-label{font-weight:800;font-size:.85rem;color:var(--blue2);white-space:nowrap}
+
+/* ── LAYOUT ── */
+.layout{display:flex;gap:16px;padding:16px;max-width:1200px;margin:auto}
+.nav{width:240px;flex-shrink:0}
+.nav-inner{background:white;border-radius:22px;padding:16px;box-shadow:0 2px 16px rgba(0,0,0,.09);position:sticky;top:16px}
+.nav-title{font-family:'Fredoka One',cursive;color:var(--blue2);font-size:1.05rem;margin-bottom:12px;padding-bottom:10px;border-bottom:2px dashed #dde8f8}
+.nav-btn-row{display:flex;flex-direction:column;gap:8px}
+.nav-btn{width:100%;text-align:left;padding:12px 14px;border:2px solid transparent;border-radius:16px;background:#f0f5ff;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:700;font-size:.9rem;color:var(--text);transition:.2s;display:flex;align-items:center;gap:10px}
+.nav-btn:hover{background:#dbe9ff;border-color:#b8d0f5}
+.nav-btn.active{background:#3a8fcb;color:white;border-color:#256fa8}
+.nav-btn .nav-ico{font-size:1.3rem;width:28px;text-align:center;flex-shrink:0}
+
+/* ── CONTENT ── */
+.content{flex:1;min-width:0}
+.section{display:none}
+.section.active{display:block}
+
+/* ── CARDS ── */
+.card{background:white;border-radius:24px;padding:26px;margin-bottom:20px;box-shadow:0 3px 18px rgba(0,0,0,.09)}
+.card-head{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+.card-num{width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,var(--blue),var(--blue2));color:white;font-family:'Fredoka One',cursive;font-size:1.4rem;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.card-num.green{background:linear-gradient(135deg,#2da55a,#1e8044)}
+.card-num.purple{background:linear-gradient(135deg,#7c5cbf,#5c3d9f)}
+.card-head h2{font-family:'Fredoka One',cursive;font-size:1.4rem;color:var(--blue2)}
+.big{font-size:1.05rem;line-height:1.9;color:var(--text)}
+
+/* ── AUDIO BUTTONS ── */
+.audio-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.aud-btn{display:inline-flex;align-items:center;gap:8px;padding:13px 20px;border-radius:50px;border:none;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:800;font-size:.95rem;transition:.15s;box-shadow:0 3px 10px rgba(0,0,0,.14);user-select:none;position:relative;overflow:hidden}
+.aud-btn::after{content:'';position:absolute;inset:0;background:rgba(255,255,255,0);transition:.2s}
+.aud-btn:hover::after{background:rgba(255,255,255,.15)}
+.aud-btn:active{transform:scale(.95)}
+.aud-btn.speaking{box-shadow:0 0 0 4px rgba(58,143,203,.35);animation:glow 1s infinite alternate}
+@keyframes glow{from{box-shadow:0 0 0 3px rgba(58,143,203,.3)}to{box-shadow:0 0 0 7px rgba(58,143,203,.1)}}
+.aud-blue{background:#3a8fcb;color:white}
+.aud-green{background:#2da55a;color:white}
+.aud-purple{background:#7c5cbf;color:white}
+.aud-orange{background:#e07820;color:white}
+.aud-yellow{background:#f5b800;color:#1a2340}
+.aud-teal{background:#0a8070;color:white}
+.aud-ico{font-size:1.15rem}
+
+/* ── DATA TYPES ── */
+.dtype-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-top:16px}
+.dtype-box{border-radius:18px;padding:18px 14px;text-align:center;cursor:pointer;border:2px solid transparent;transition:.2s;user-select:none}
+.dtype-box:hover{transform:scale(1.03);box-shadow:0 4px 16px rgba(0,0,0,.12)}
+.dtype-box:active{transform:scale(.97)}
+.dtype-box .dico{font-size:2.4rem;display:block;margin-bottom:8px}
+.dtype-box h3{font-family:'Fredoka One',cursive;font-size:1.1rem;margin-bottom:4px}
+.dtype-box p{font-size:.95rem;font-weight:700}
+.dtype-box .eng-label{font-size:.78rem;font-weight:800;letter-spacing:.5px;margin-top:6px;opacity:.75;text-transform:uppercase}
+.dtype-blue{background:#e6f2ff;border-color:#b8d4f5}.dtype-blue h3{color:#256fa8}.dtype-blue .eng-label{color:#256fa8}
+.dtype-green{background:#e6f9ee;border-color:#a8dfc0}.dtype-green h3{color:#1e8044}.dtype-green .eng-label{color:#1e8044}
+.dtype-purple{background:#f2eeff;border-color:#c8b8f0}.dtype-purple h3{color:#5e3fa8}.dtype-purple .eng-label{color:#5e3fa8}
+
+/* ── OPERATORS ── */
+.op-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;margin-top:16px}
+.op-box{border-radius:18px;padding:18px 12px;text-align:center;cursor:pointer;transition:.2s;user-select:none;border:2px solid transparent}
+.op-box:hover{transform:scale(1.05);box-shadow:0 4px 14px rgba(0,0,0,.12)}
+.op-box:active{transform:scale(.96)}
+.op-sym{font-family:'Fredoka One',cursive;font-size:2.2rem;display:block;margin-bottom:6px}
+.op-name-en{font-size:.75rem;font-weight:800;letter-spacing:.5px;text-transform:uppercase;opacity:.7;margin-top:4px;display:block}
+.op-yellow{background:#fffbe6;border-color:#f0d060}.op-yellow .op-sym,.op-yellow h3{color:#b88000}.op-yellow .op-name-en{color:#b88000}
+.op-orange{background:#fff4e6;border-color:#f0c090}.op-orange .op-sym,.op-orange h3{color:#9a4a00}.op-orange .op-name-en{color:#9a4a00}
+.op-coral{background:#fff0f0;border-color:#f0b0b0}.op-coral .op-sym,.op-coral h3{color:#a01010}.op-coral .op-name-en{color:#a01010}
+.op-teal{background:#e0f8f4;border-color:#90d8cc}.op-teal .op-sym,.op-teal h3{color:#0a6e5e}.op-teal .op-name-en{color:#0a6e5e}
+.op-blue{background:#e6f2ff;border-color:#b8d4f5}.op-blue .op-sym,.op-blue h3{color:#256fa8}.op-blue .op-name-en{color:#256fa8}
+
+/* ── CODE BLOCK (estilo Visual Studio Code) ── */
+.vscode-wrap{margin-top:16px;border-radius:18px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.25)}
+.vscode-header{background:#1e1e1e;padding:10px 16px;display:flex;align-items:center;gap:8px}
+.vscode-dots{display:flex;gap:6px}
+.vscode-dot{width:12px;height:12px;border-radius:50%}
+.vscode-dot.red{background:#ff5f57}
+.vscode-dot.yellow{background:#ffbd2e}
+.vscode-dot.green{background:#28c940}
+.vscode-filename{color:#9ca3af;font-size:.78rem;font-family:'Courier New',monospace;margin-left:8px}
+.code-block{background:#1e1e1e;color:#d4d4d4;padding:20px 22px;font-family:'Courier New',monospace;font-size:1rem;line-height:2;overflow:auto;cursor:pointer;position:relative}
+.code-block:hover::before{content:'🔊 Tocar para escuchar';position:absolute;top:10px;right:14px;background:rgba(58,143,203,.8);color:white;font-family:'Nunito',sans-serif;font-size:.75rem;font-weight:700;padding:4px 10px;border-radius:20px}
+.ln{color:#6a8ab0;user-select:none;display:inline-block;width:28px;text-align:right;margin-right:12px;font-size:.85rem}
+.kw{color:#569cd6}
+.str{color:#ce9178}
+.num{color:#b5cea8}
+.fn{color:#dcdcaa}
+.cmt{color:#6a9955;font-style:italic}
+.var{color:#9cdcfe}
+.op{color:#d4d4d4}
+.blank-slot{display:inline-block;background:#1e3a5f;border:2px dashed #5090c0;color:#7ab8f5;border-radius:8px;padding:2px 14px;cursor:pointer;font-weight:700;font-family:'Courier New',monospace;transition:.2s}
+.blank-slot:hover{background:#2a4e78;border-color:#7ab8f5}
+.blank-slot.done{background:#1a3d25;border-color:#4caf74;color:#81e09a}
+
+/* ── QUIZ ── */
+.q-label{font-size:1.05rem;font-weight:700;line-height:1.7;color:var(--text);background:#f4f8ff;padding:16px 18px;border-radius:16px;margin-bottom:16px;border-left:4px solid var(--blue)}
+.opt-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.opt{padding:18px;border-radius:18px;border:2.5px solid #d0dcee;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:700;font-size:1rem;text-align:center;background:#f8faff;transition:.2s;user-select:none}
+.opt:hover{border-color:var(--blue);background:#e8f1ff;transform:scale(1.02)}
+.opt:active{transform:scale(.97)}
+.opt.ok{background:#e6f9ee;border-color:#2da55a;color:#1e6e40;pointer-events:none}
+.opt.no{background:#fff0f0;border-color:#e04040;color:#991010}
+.opt.shake{animation:shake .35s ease}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.ok-msg{display:none;margin-top:14px;padding:14px 18px;border-radius:16px;background:#e6f9ee;border:2px solid #2da55a;font-weight:700;color:#1e6e40;font-size:1rem}
+.ok-msg.show{display:flex;align-items:center;gap:10px}
+
+/* ── CMP grid ── */
+.cmp-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+.cmp-box{border-radius:18px;padding:18px 16px;text-align:center;cursor:pointer;transition:.2s;border:2px solid transparent}
+.cmp-box:hover{transform:scale(1.03)}
+.cmp-a{background:#e6f2ff;border-color:#b8d4f5}.cmp-a h3{color:#256fa8;font-family:'Fredoka One',cursive;font-size:1.3rem}
+.cmp-b{background:#e0f8f4;border-color:#90d8cc}.cmp-b h3{color:#0a6e5e;font-family:'Fredoka One',cursive;font-size:1.3rem}
+
+/* ── HERO ── */
+.hero{border-radius:24px;overflow:hidden;position:relative;background:linear-gradient(135deg,#256fa8,#3a8fcb);padding:32px 26px;margin-bottom:20px;color:white}
+.hero h2{font-family:'Fredoka One',cursive;font-size:1.8rem;margin-bottom:10px}
+.hero p{font-size:1rem;line-height:1.8;opacity:.92}
+.hero-mascot{font-size:5rem;position:absolute;right:24px;bottom:16px;opacity:.25;line-height:1}
+.intro-list{list-style:none;margin-top:16px}
+.intro-list li{display:flex;align-items:center;gap:10px;padding:8px 0;font-size:1rem;font-weight:700;border-bottom:1px dashed rgba(255,255,255,.3)}
+.intro-list li:last-child{border:none}
+.intro-list li .ico{font-size:1.4rem;width:36px;text-align:center}
+
+/* ── INFO BOX ── */
+.info-box{border-radius:16px;padding:16px 18px;margin-top:14px;border-left:5px solid}
+.info-blue{background:#e6f2ff;border-color:#3a8fcb}
+.info-green{background:#e6f9ee;border-color:#2da55a}
+.info-yellow{background:#fffbe6;border-color:#f5b800}
+.info-purple{background:#f2eeff;border-color:#7c5cbf}
+.info-box p{font-size:.98rem;font-weight:700;line-height:1.8;color:var(--text)}
+
+/* ── EXAMPLE LABEL ── */
+.example-label{display:inline-block;background:#256fa8;color:white;font-family:'Fredoka One',cursive;font-size:.85rem;padding:4px 14px;border-radius:20px;margin-top:18px;margin-bottom:6px}
+.example-label.green{background:#1e8044}
+.example-label.purple{background:#5e3fa8}
+.example-label.orange{background:#b86000}
+
+/* ── OPERATOR DETAIL CARD ── */
+.op-detail{background:#f8faff;border-radius:18px;padding:18px;margin-top:12px;border:2px solid #e0eaff}
+.op-detail-row{display:flex;align-items:flex-start;gap:14px;padding:12px 0;border-bottom:1px dashed #dde8f8}
+.op-detail-row:last-child{border:none}
+.op-big-sym{font-family:'Fredoka One',cursive;font-size:2rem;width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.op-detail-text h4{font-family:'Fredoka One',cursive;font-size:1.1rem;color:var(--blue2);margin-bottom:4px}
+.op-detail-text p{font-size:.95rem;line-height:1.7;color:var(--text)}
+.op-detail-text .en-tag{font-size:.72rem;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--blue);opacity:.8}
+
+/* ── POPUPS ── */
+.overlay{position:fixed;inset:0;background:rgba(20,40,80,.45);display:none;align-items:center;justify-content:center;z-index:999;backdrop-filter:blur(3px)}
+.overlay.show{display:flex}
+.popup{background:white;border-radius:28px;width:90%;max-width:400px;padding:36px 32px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+.popup-ico{font-size:4rem;display:block;margin-bottom:12px}
+.popup h2{font-family:'Fredoka One',cursive;color:var(--green);font-size:1.7rem;margin-bottom:8px}
+.popup p{color:var(--muted);font-size:1rem;margin-bottom:24px}
+.popup button{background:linear-gradient(135deg,#2da55a,#1e8044);color:white;border:none;border-radius:50px;padding:14px 32px;font-family:'Nunito',sans-serif;font-weight:800;font-size:1rem;cursor:pointer;transition:.15s}
+.popup button:active{transform:scale(.97)}
+
+.vpick{background:white;border-radius:24px;width:90%;max-width:460px;padding:28px;box-shadow:0 16px 50px rgba(0,0,0,.22)}
+.vpick h3{font-family:'Fredoka One',cursive;color:var(--blue2);font-size:1.3rem;margin-bottom:16px}
+.voice-list{display:flex;flex-direction:column;gap:8px;max-height:280px;overflow-y:auto}
+.v-item{padding:12px 16px;border-radius:14px;border:2px solid #dde8f8;cursor:pointer;font-weight:700;font-size:.9rem;display:flex;align-items:center;gap:10px;transition:.15s}
+.v-item:hover{background:#e8f1ff;border-color:#b8d0f5}
+.v-item.selected{background:#3a8fcb;color:white;border-color:#256fa8}
+.v-badge{font-size:.7rem;padding:2px 8px;border-radius:20px;background:rgba(255,255,255,.3);font-weight:600}
+.vpick-close{margin-top:16px;width:100%;padding:12px;border-radius:14px;background:#f0f5ff;border:none;cursor:pointer;font-family:'Nunito',sans-serif;font-weight:700;font-size:.95rem;color:var(--blue2)}
+
+/* ── SINTAXIS BOX ── */
+.sintaxis-box{background:#f0f5ff;border-radius:16px;padding:18px;margin-top:16px;border:2px dashed #b8d0f5}
+.sintaxis-box h4{font-family:'Fredoka One',cursive;color:#256fa8;margin-bottom:10px;font-size:1.05rem}
+.sintaxis-row{display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap}
+.sx-piece{border-radius:10px;padding:6px 12px;font-family:'Courier New',monospace;font-weight:700;font-size:.95rem}
+.sx-blue{background:#3a8fcb;color:white}
+.sx-green{background:#2da55a;color:white}
+.sx-orange{background:#e07820;color:white}
+.sx-gray{background:#e0e8f0;color:#1a2340}
+.sx-arrow{color:#888;font-size:1.2rem}
+
+@media(max-width:860px){
+  .layout{flex-direction:column}
+  .nav{width:100%}
+  .nav-inner{position:static}
+  .nav-btn-row{flex-direction:row;flex-wrap:wrap}
+  .nav-btn{flex:1;min-width:110px;padding:10px 12px;font-size:.82rem}
+  .opt-grid{grid-template-columns:1fr}
+  .cmp-grid{grid-template-columns:1fr}
+  .op-grid{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+<h2 class="sr-only">Curso de Python para Miqueas con audio amigable</h2>
+
+<header class="hdr">
+  <div class="hdr-icon">🚚</div>
+  <div>
+    <h1>Python con Miqueas 🐍</h1>
+    <p>¡Toca cualquier cosa para escuchar y aprender!</p>
+    <div class="voice-bar" onclick="openVoicePicker()" title="Cambiar voz">
+      <div class="vdot"></div>
+      <span id="voiceLabel">Cargando voz…</span>
+      <span style="opacity:.7">· 🎙 cambiar</span>
+    </div>
+  </div>
+</header>
+
+<div class="prog-wrap">
+  <div class="prog-stars" id="starsRow">⭐</div>
+  <div class="prog-bar-bg"><div class="prog-bar-fill" id="pbar"></div></div>
+  <div class="prog-label" id="plab">0 de 14</div>
+</div>
+
+<div class="layout">
+<nav class="nav" aria-label="Temas">
+  <div class="nav-inner">
+    <div class="nav-title">📚 Mis temas</div>
+    <div class="nav-btn-row">
+      <button class="nav-btn active" id="nb-intro" onclick="go('intro')"><span class="nav-ico">🏠</span>Inicio</button>
+      <button class="nav-btn" id="nb-t1" onclick="go('t1')"><span class="nav-ico">🔢</span>Tipos de datos</button>
+      <button class="nav-btn" id="nb-t2" onclick="go('t2')"><span class="nav-ico">📦</span>Variables</button>
+      <button class="nav-btn" id="nb-t3" onclick="go('t3')"><span class="nav-ico">🔊</span>Print e Input</button>
+      <button class="nav-btn" id="nb-t4" onclick="go('t4')"><span class="nav-ico">➕</span>Operadores</button>
+      <button class="nav-btn" id="nb-t5" onclick="go('t5')"><span class="nav-ico">⚖️</span>Comparaciones</button>
+    </div>
+  </div>
+</nav>
+
+<main class="content">
+
+<!-- ══════════════ INTRO ══════════════ -->
+<section class="section active" id="intro">
+  <div class="hero">
+    <h2>¡Hola Miqueas! 👋</h2>
+    <p>Vamos a aprender a programar con Python juntos, paso a paso.<br>¡Toca cualquier botón para escuchar!</p>
+    <div class="hero-mascot">🐍</div>
+    <ul class="intro-list">
+      <li><span class="ico">🔢</span>Tipos de datos</li>
+      <li><span class="ico">📦</span>Variables</li>
+      <li><span class="ico">🔊</span>Print e Input</li>
+      <li><span class="ico">➕</span>Operadores matemáticos</li>
+      <li><span class="ico">⚖️</span>Comparaciones</li>
+    </ul>
+  </div>
+
+  <!-- Por qué programamos -->
+  <div class="card">
+    <div class="card-head"><div class="card-num">🌟</div><h2>¿Por qué programamos?</h2></div>
+    <p class="big">Programar es darle instrucciones a la computadora para que haga cosas por nosotros. ¡Es como ser el jefe de la computadora! 🤖</p>
+    <div class="info-box info-green" style="margin-top:12px">
+      <p>✅ Con programación podemos hacer juegos, aplicaciones, dibujos automáticos, calculadoras, y muchas cosas más. ¡Las posibilidades son infinitas!</p>
+    </div>
+    <div class="audio-row">
+      <button class="aud-btn aud-green" onclick="say(this,'Miqueas, cuando programamos le decimos a la computadora exactamente qué tiene que hacer. Es como escribirle una lista de instrucciones. La computadora sigue esas instrucciones una por una, sin equivocarse. Por eso programar es tan poderoso.')">
+        <span class="aud-ico">🌟</span> ¿Por qué programar?
+      </button>
+      <button class="aud-btn aud-blue" onclick="say(this,'Con programación podemos hacer cosas increíbles. Podemos crear juegos donde vos sos el héroe. Podemos hacer que la computadora dibuje figuras sola. Podemos hacer una calculadora que resuelva cuentas difíciles en un segundo. ¡Vos podés crear todo eso!')">
+        <span class="aud-ico">🎮</span> ¿Qué podemos crear?
+      </button>
+    </div>
+  </div>
+
+  <!-- Qué es Python -->
+  <div class="card">
+    <div class="card-head"><div class="card-num">🐍</div><h2>¿Qué es Python?</h2></div>
+    <p class="big">Python es un <strong>lenguaje de programación</strong>. Es un idioma especial que entiende la computadora. Con Python le decimos a la computadora qué tiene que hacer, paso a paso.</p>
+    <div class="info-box info-blue">
+      <p>🐍 Python se llama así por un programa de TV muy gracioso que se llamaba <strong>Monty Python</strong>. ¡No es por la serpiente! Aunque usan una serpiente de símbolo porque es simpático. 😄</p>
+    </div>
+    <div class="audio-row">
+      <button class="aud-btn aud-blue" onclick="say(this,'Python es un lenguaje de programación. Así como vos hablás español para comunicarte con las personas, Python es el idioma que usa la computadora para entender instrucciones. Cuando escribís código en Python, la computadora lo lee y hace exactamente lo que le pedís.')">
+        <span class="aud-ico">🐍</span> ¿Qué es Python?
+      </button>
+      <button class="aud-btn aud-orange" onclick="say(this,'La serpiente que ves es el símbolo de Python. Se llama así por un programa de televisión muy gracioso que se llamaba Monty Python. Los creadores del lenguaje eran fanáticos de ese programa.')">
+        <span class="aud-ico">🎬</span> ¿Por qué serpiente?
+      </button>
+    </div>
+  </div>
+
+  <!-- Qué es código -->
+  <div class="card">
+    <div class="card-head"><div class="card-num">💻</div><h2>¿Qué es el código?</h2></div>
+    <p class="big">El <strong>código</strong> son las instrucciones que escribimos para la computadora. Son líneas de texto especiales que la computadora entiende y sigue.</p>
+    <div class="info-box info-yellow">
+      <p>📝 Así como una receta de cocina tiene pasos: "primero mezclá, después horneá"... el código también tiene pasos que la computadora sigue en orden.</p>
+    </div>
+    <span class="example-label">📄 Ejemplo de código</span>
+    <div class="vscode-wrap">
+      <div class="vscode-header">
+        <div class="vscode-dots"><div class="vscode-dot red"></div><div class="vscode-dot yellow"></div><div class="vscode-dot green"></div></div>
+        <span class="vscode-filename">mi_primer_codigo.py</span>
+      </div>
+      <div class="code-block" onclick="sayDirect('Este es un ejemplo de código. En la primera línea guardamos el nombre Miqueas en una cajita llamada nombre. En la segunda línea mostramos el mensaje Hola Miqueas. La computadora sigue estas instrucciones en orden.')">
+        <span class="ln">1</span><span class="cmt"># Esto es mi primer programa</span><br>
+        <span class="ln">2</span><span class="var">nombre</span> <span class="op">=</span> <span class="str">"Miqueas"</span><br>
+        <span class="ln">3</span><span class="fn">print</span>(<span class="str">"Hola "</span> <span class="op">,</span> <span class="var">nombre</span>)<br>
+        <span class="ln">4</span><span class="cmt"># La pantalla muestra: Hola Miqueas</span>
+      </div>
+    </div>
+    <div class="audio-row">
+      <button class="aud-btn aud-purple" onclick="say(this,'El código son las instrucciones que le escribimos a la computadora. Cuando escribimos código, le decimos exactamente qué hacer y en qué orden. La computadora lee línea por línea, de arriba hacia abajo, igual que cuando leemos un libro.')">
+        <span class="aud-ico">💻</span> ¿Qué es el código?
+      </button>
+    </div>
+  </div>
+
+  <!-- Qué es Visual Studio Code -->
+  <div class="card">
+    <div class="card-head"><div class="card-num">🖥️</div><h2>¿Qué es Visual Studio Code?</h2></div>
+    <p class="big"><strong>Visual Studio Code</strong> (o VS Code) es el programa donde escribimos nuestro código. Es como el cuaderno donde anotamos las instrucciones para la computadora.</p>
+    <div class="info-box info-purple">
+      <p>🎨 VS Code tiene colores que nos ayudan a entender el código. Cada tipo de instrucción tiene un color diferente. ¡Así es más fácil leer!</p>
+    </div>
+    <span class="example-label purple">🎨 Así se ve VS Code</span>
+    <div class="vscode-wrap">
+      <div class="vscode-header">
+        <div class="vscode-dots"><div class="vscode-dot red"></div><div class="vscode-dot yellow"></div><div class="vscode-dot green"></div></div>
+        <span class="vscode-filename">ejemplo.py</span>
+      </div>
+      <div class="code-block" onclick="sayDirect('En Visual Studio Code, el fondo es oscuro y el texto tiene colores. El color azul son las palabras especiales de Python. El color naranja son los textos. El color verde claro son los números. El color gris son los comentarios, que son notas que escribimos nosotros.')">
+        <span class="ln">1</span><span class="cmt"># Los comentarios son grises — son notas para nosotros</span><br>
+        <span class="ln">2</span><span class="kw">ruedas</span> <span class="op">=</span> <span class="num">18</span>  &nbsp;&nbsp;&nbsp;<span class="cmt"># número en verde</span><br>
+        <span class="ln">3</span><span class="kw">camion</span> <span class="op">=</span> <span class="str">"FH16"</span>  <span class="cmt"># texto en naranja</span><br>
+        <span class="ln">4</span><span class="fn">print</span>(<span class="var">camion</span>)  &nbsp;&nbsp;<span class="cmt"># función en amarillo</span>
+      </div>
+    </div>
+    <div class="audio-row">
+      <button class="aud-btn aud-purple" onclick="say(this,'Visual Studio Code es el programa donde escribimos nuestro código Python. Tiene un fondo oscuro y usa colores para ayudarnos a entender. Las palabras importantes son azules. Los textos son naranjas. Los números son verdes. Los comentarios, que son notas nuestras, son grises. Estos colores nos ayudan a leer el código más fácil.')">
+        <span class="aud-ico">🖥️</span> ¿Qué es VS Code?
+      </button>
+      <button class="aud-btn aud-green" onclick="say(this,'¡Bienvenido Miqueas! Hoy vas a aprender a programar con Python. Vamos a aprender cinco cosas importantes. Los tipos de datos, las variables, print e input, los operadores matemáticos, y las comparaciones. ¡De a poco, sin apuro, vos podés!')">
+        <span class="aud-ico">📋</span> ¿Qué vamos a aprender?
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ T1: TIPOS DE DATOS ══════════════ -->
+<section class="section" id="t1">
+  <div class="card">
+    <div class="card-head"><div class="card-num">1</div><h2>Tipos de datos</h2></div>
+    <p class="big">Cuando la computadora guarda información, necesita saber <strong>qué tipo</strong> de información es. ¡Hay tres tipos principales! Toca cada cuadro para escuchar.</p>
+    <div class="info-box info-blue">
+      <p>💡 <strong>¿Para qué sirven?</strong> Los tipos de datos le dicen a Python cómo manejar la información. No es lo mismo guardar una palabra que un número. ¡Python necesita saberlo!</p>
+    </div>
+    <div class="dtype-grid">
+      <div class="dtype-box dtype-blue" onclick="sayDirect('El texto se llama String, que en inglés significa cadena. Se escribe siempre entre comillas. Por ejemplo la palabra Volvo, o la palabra rojo, o la palabra camión. Las comillas son muy importantes, sin ellas Python no sabe que es texto.')">
+        <span class="dico">📝</span>
+        <h3>Texto (String)</h3>
+        <p>"Volvo"</p>
+      </div>
+      <div class="dtype-box dtype-green" onclick="sayDirect('El número entero se llama Integer, que en inglés significa número entero. Son números sin punto decimal. Por ejemplo el dieciocho, el seis, el cien. Son los números que usamos para contar cosas completas.')">
+        <span class="dico">🔢</span>
+        <h3>Número entero (Integer)</h3>
+        <p>18</p>
+      </div>
+      <div class="dtype-box dtype-purple" onclick="sayDirect('El número decimal se llama Float, que en inglés significa flotante. Tiene un punto en el medio. Por ejemplo doce punto cinco, o tres punto catorce. El punto separa la parte entera de la parte decimal. Se usa para medir pesos, distancias, o precios.')">
+        <span class="dico">📊</span>
+        <h3>Decimal (Float)</h3>
+        <p>12.5</p>
+      </div>
+    </div>
+
+    <span class="example-label">📄 Ejemplo en VS Code</span>
+    <div class="vscode-wrap">
+      <div class="vscode-header">
+        <div class="vscode-dots"><div class="vscode-dot red"></div><div class="vscode-dot yellow"></div><div class="vscode-dot green"></div></div>
+        <span class="vscode-filename">tipos_de_datos.py</span>
+      </div>
+      <div class="code-block" onclick="sayDirect('En este ejemplo vemos los tres tipos. La primera línea guarda el texto Volvo con comillas, eso es un String. La segunda línea guarda el número dieciocho sin comillas y sin punto, eso es un Integer. La tercera línea guarda doce punto cinco, eso es un Float.')">
+        <span class="ln">1</span><span class="cmt"># String: texto entre comillas</span><br>
+        <span class="ln">2</span><span class="var">marca</span> <span class="op">=</span> <span class="str">"Volvo"</span><br>
+        <span class="ln">3</span><span class="cmt"># Integer: número entero sin punto</span><br>
+        <span class="ln">4</span><span class="var">ruedas</span> <span class="op">=</span> <span class="num">18</span><br>
+        <span class="ln">5</span><span class="cmt"># Float: número con punto decimal</span><br>
+        <span class="ln">6</span><span class="var">peso</span> <span class="op">=</span> <span class="num">12.5</span>
+      </div>
+    </div>
+
+    <div class="sintaxis-box">
+      <h4>📌 Regla importante para recordar</h4>
+      <div class="sintaxis-row">
+        <span class="sx-piece sx-blue">Texto</span>
+        <span class="sx-arrow">→</span>
+        <span class="sx-piece sx-green">siempre con "comillas"</span>
+      </div>
+      <div class="sintaxis-row">
+        <span class="sx-piece sx-blue">Número entero</span>
+        <span class="sx-arrow">→</span>
+        <span class="sx-piece sx-green">sin punto: 18</span>
+      </div>
+      <div class="sintaxis-row">
+        <span class="sx-piece sx-blue">Número decimal</span>
+        <span class="sx-arrow">→</span>
+        <span class="sx-piece sx-green">con punto: 12.5</span>
+      </div>
+    </div>
+
+    <div class="audio-row">
+      <button class="aud-btn aud-blue" onclick="say(this,'Muy bien. Hay tres tipos de datos. El texto, que se llama String en inglés, y siempre va entre comillas. El número entero, que se llama Integer en inglés, y no tiene punto. Y el número decimal, que se llama Float en inglés, y tiene un punto en el medio. ¡Ya sabés los tres tipos de datos!')">
+        <span class="aud-ico">🔊</span> Resumen completo
+      </button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><div class="card-num green">A</div><h2>Desafío 1 ⭐</h2></div>
+    <div class="q-label">🤔 La palabra <strong>"Rojo"</strong> (con comillas) es un tipo de dato llamado…</div>
+    <div class="opt-grid">
+      <div class="opt" onclick="ans(1,true,this)">📝 Texto (String)</div>
+      <div class="opt" onclick="ans(1,false,this)">🔢 Número (Integer)</div>
+    </div>
+    <div class="ok-msg" id="msg1"><span>🌟</span> ¡Correcto! Las comillas indican que es texto, que se llama String.</div>
+  </div>
+  <div class="card">
+    <div class="card-head"><div class="card-num green">B</div><h2>Desafío 2 ⭐</h2></div>
+    <div class="q-label">🤔 El número <strong>18</strong> (sin punto, sin comillas) es…</div>
+    <div class="opt-grid">
+      <div class="opt" onclick="ans(2,true,this)">🔢 Número entero (Integer)</div>
+      <div class="opt" onclick="ans(2,false,this)">📊 Decimal (Float)</div>
+    </div>
+    <div class="ok-msg" id="msg2"><span>🌟</span> ¡Correcto! El 18 no tiene punto, es un número entero o Integer.</div>
+  </div>
+</section>
+
+<!-- ══════════════ T2: VARIABLES ══════════════ -->
+<section class="section" id="t2">
+  <div class="card">
+    <div class="card-head"><div class="card-num">2</div><h2>Variables</h2></div>
+    <p class="big">Las variables son como <strong>cajitas</strong> donde guardamos información. Le ponemos un nombre a cada cajita y adentro guardamos un dato.</p>
+    <div class="info-box info-green">
+      <p>💡 <strong>¿Para qué sirven?</strong> Guardamos información en una variable para poder usarla después, muchas veces, sin tener que escribirla de nuevo cada vez.</p>
+    </div>
+    <div class="audio-row">
+      <button class="aud-btn aud-blue" onclick="say(this,'Una variable es como una cajita mágica. Le ponemos un nombre y adentro guardamos información. Después podemos usar ese nombre para acceder a la información cuando la necesitamos. Por ejemplo, si guardamos el número dieciocho en una cajita llamada ruedas, después podemos usar la palabra ruedas y Python sabe que vale dieciocho.')">
+        <span class="aud-ico">📦</span> ¿Qué es una variable?
+      </button>
+      <button class="aud-btn aud-green" onclick="say(this,'El signo igual se usa para guardar algo en la variable. Se lee de derecha a izquierda. Por ejemplo: ruedas igual dieciocho. Eso significa: guardá el número dieciocho dentro de la cajita que se llama ruedas. ¡Es como meter algo adentro de la caja!')">
+        <span class="aud-ico">🟰</span> ¿Para qué sirve el igual?
+      </button>
+    </div>
+
+    <div class="sintaxis-box">
+      <h4>📌 ¿Cómo se escribe una variable?</h4>
+      <div class="sintaxis-row">
+        <span class="sx-piece sx-blue">nombre_cajita</span>
+        <span class="sx-piece sx-orange">=</span>
+        <span class="sx-piece sx-green">información</span>
+      </div>
+      <p style="margin-top:8px;font-size:.92rem;color:var(--muted);font-weight:700">El signo <strong>=</strong> significa "guardá esto ahí adentro"</p>
+    </div>
+
+    <span class="example-label">📄 Ejemplo en VS Code</span>
+    <div class="vscode-wrap">
+      <div class="vscode-header">
+        <div class="vscode-dots"><div class="vscode-dot red"></div><div class="vscode-dot yellow"></div><div class="vscode-dot green"></div></div>
+        <span class="vscode-filename">variables.py</span>
+      </div>
+      <div class="code-block" onclick="sayDirect('En este ejemplo creamos dos variables. La cajita modelo guarda el texto FH dieciséis. La cajita ruedas guarda el número dieciocho. Después usamos print para mostrar lo que hay en cada cajita.')">
+        <span class="ln">1</span><span class="cmt"># Guardamos texto en una variable</span><br>
+        <span class="ln">2</span><span class="var">modelo</span> <span class="op">=</span> <span class="str">"FH16"</span><br>
+        <span class="ln">3</span><span class="cmt"># Guardamos un número en otra variable</span><br>
+        <span class="ln">4</span><span class="var">ruedas</span> <span class="op">=</span> <span class="num">18</span><br>
+        <span class="ln">5</span><span class="fn">print</span>(<span class="var">modelo</span>)  <span class="cmt"># muestra: FH16</span><br>
+        <span class="ln">6</span><span class="fn">print</span>(<span class="var">ruedas</span>)  <span class="cmt"># muestra: 18</span>
+      </div>
+    </div>
+
+    <p style="margin-top:16px;font-weight:700;color:var(--muted)">👆 Tocá el <strong>···</strong> para completar el código:</p>
+    <div class="vscode-wrap" style="margin-top:8px">
+      <div class="vscode-header">
+        <div class="vscode-dots"><div class="vscode-dot red"></div><div class="vscode-dot yellow"></div><div class="vscode-dot green"></div></div>
+        <span class="vscode-filename">completar.py</span>
+      </div>
+      <div class="code-block" onclick="sayDirect('modelo igual FH dieciséis. La cajita se llama modelo y adentro guardamos el texto FH dieciséis.')">
+        <span class="ln">1</span><span class="var">modelo</span> <span class="blank-slot" id="bs3" onclick="event.stopPropagation();fillSlot('bs3',3,'=')">···</span> <span class="str">"FH16"</span>
+      </div>
+    </div>
+    <div class="ok-msg" id="msg3"><span>🌟</span> ¡Genial! El signo = guarda texto en la variable.</div>
+    <div class="vscode-wrap" style="margin-top:12px">
+      <div class="vscode-header">
+        <div class="vscode-dots"><div class="vscode-dot red"></div><div class="vscode-dot yellow"></div><div class="vscode-dot green"></div></div>
+        <span class="vscode-filename">completar2.py</span>
+      </div>
+      <div class="code-block" style="margin-top:0" onclick="sayDirect('ruedas igual dieciocho. La cajita se llama ruedas y adentro guardamos el número dieciocho.')">
+        <span class="ln">1</span><span class="var">ruedas</span> <span class="blank-slot" id="bs4" onclick="event.stopPropagation();fillSlot('bs4',4,'=')">···</span> <span class="num">18</span>
+      </div>
+    </div>
+    <div class="ok-msg" id="msg4"><span>🌟</span> ¡Genial! El signo = también guarda números.</div>
+  </div>
+</section>
+
+<!-- ══════════════ T3: PRINT E INPUT ══════════════ -->
+<section class="section" id="t3">
+  <div class="card">
+    <div class="card-head"><div class="card-num">3</div><h2>Print e Input</h2></div>
+    <p class="big">Son dos instrucciones muy importantes. Una <strong>muestra</strong> cosas y la otra <strong>pide</strong> cosas. ¡Toca cada tarjeta para escuchar!</p>
+    <div class="info-box info-blue">
+      <p>💡 <strong>¿Para qué sirven?</strong> Con <strong>print</strong> le mostramos información al usuario. Con <strong>input</strong> le pedimos que escriba algo.</p>
+    </div>
+    <div class="cmp-grid">
+      <div class="cmp-box cmp-a" onclick="sayDirect('Print, que se pronuncia print, significa imprimir en inglés. Cuando escribís print, la computadora muestra un mensaje en la pantalla. Es como un altavoz que habla al usuario. Por ejemplo, si escribís print Hola Miqueas, la pantalla muestra el texto Hola Miqueas.')">
+        <h3>🔊 print()</h3>
+        <p style="margin-top:8px;color:#256fa8;font-weight:700">Muestra mensajes</p>
+        <p style="margin-top:4px;font-size:.85rem;color:#5a6a88;font-weight:700">"print" = imprimir en inglés</p>
+        <p style="margin-top:6px;font-size:.82rem;color:#5a6a88">Toca para escuchar</p>
+      </div>
+      <div class="cmp-box cmp-b" onclick="sayDirect('Input, que se pronuncia input, significa entrada en inglés. Cuando escribís input, la computadora espera a que el usuario escriba algo con el teclado. Es como hacerle una pregunta a la persona que usa el programa. La computadora espera pacientemente hasta que el usuario escriba su respuesta.')">
+        <h3>⌨️ input()</h3>
+        <p style="margin-top:8px;color:#0a6e5e;font-weight:700">Pide información</p>
+        <p style="margin-top:4px;font-size:.85rem;color:#5a6a88;font-weight:700">"input" = entrada en inglés</p>
+        <p style="margin-top:6px;font-size:.82rem;color:#5a6a88">Toca para escuchar</p>
+      </div>
+    </div>
+
+    <div class="sintaxis-box">
+      <h4>📌 ¿Cómo se escriben?</h4>
+      <div class="sintaxis-row">
+        <span class="sx-piece sx-blue">print</span>
+        <span class="sx-piece sx-gray">( "mensaje" )</span>
+        <span class="sx-arrow">→ muestra en pantalla</span>
+      </div>
+      <div class="sintaxis-row">
+        <span class="sx-piece sx-blue">variable</span>
+        <span class="sx-piece sx-orange">=</span>
+        <span class="sx-piece sx-blue">input</span>
+        <span class="sx-piece sx-gray">( "pregunta" )</span>
+      </div>
+    </div>
+
+    <span class="example-label">📄 Ejemplo con print()</span>
+    <div class="vscode-wrap">
+      <div class="vscode-header">
+        <div class="vscode-dots"><div class="vscode-dot red"></div><div class="vscode-dot yellow"></div><div class="vscode-dot green"></div></div>
+        <span class="vscode-filename">print_ejemplo.py</span>
+      </div>
+      <div class="code-block" onclick="sayDirect('En la primera línea mostramos el texto Hola Miqueas. En la segunda línea guardamos el nombre Miqueas en una variable. En la tercera línea mostramos la variable nombre. La pantalla muestra Miqueas.')">
+        <span class="ln">1</span><span class="fn">print</span>(<span class="str">"Hola Miqueas"</span>)  <span class="cmt"># muestra: Hola Miqueas</span><br>
+        <span class="ln">2</span><span class="var">nombre</span> <span class="op">=</span> <span class="str">"Miqueas"</span><br>
+        <span class="ln">3</span><span class="fn">print</span>(<span class="var">nombre</span>)  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt"># muestra: Miqueas</span>
+      </div>
+    </div>
+
+    <span class="example-label green">📄 Ejemplo con input()</span>
+    <div class="vscode-wrap">
+      <div class="vscode-header">
+        <div class="vscode-dots"><div class="vscode-dot red"></div><div class="vscode-dot yellow"></div><div class="vscode-dot green"></div></div>
+        <span class="vscode-filename">input_ejemplo.py</span>
+      </div>
+      <div class="code-block" onclick="sayDirect('En la primera línea le preguntamos al usuario su nombre y guardamos la respuesta en la variable nombre. En la segunda línea mostramos Hola y el nombre que escribió el usuario. Si el usuario escribe Miqueas, la pantalla muestra Hola Miqueas.')">
+        <span class="ln">1</span><span class="var">nombre</span> <span class="op">=</span> <span class="fn">input</span>(<span class="str">"¿Cómo te llamás? "</span>)<br>
+        <span class="ln">2</span><span class="fn">print</span>(<span class="str">"Hola "</span> <span class="op">,</span> <span class="var">nombre</span>)<br>
+        <span class="ln">3</span><span class="cmt"># Si el usuario escribe "Miqueas"</span><br>
+        <span class="ln">4</span><span class="cmt"># muestra: Hola Miqueas</span>
+      </div>
+    </div>
+
+    <div class="audio-row" style="margin-top:14px">
+      <button class="aud-btn aud-blue" onclick="say(this,'Print e input son muy importantes. Print, que en inglés significa imprimir, muestra cosas en la pantalla. Input, que en inglés significa entrada, espera a que el usuario escriba algo. Son como el altavoz y el micrófono del programa. Print habla, input escucha.')">
+        <span class="aud-ico">🔊</span> Explicar los dos juntos
+      </button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-head"><div class="card-num green">A</div><h2>Desafío 5 ⭐</h2></div>
+    <div class="q-label">🤔 ¿Qué función <strong>MUESTRA</strong> mensajes en pantalla?</div>
+    <div class="opt-grid">
+      <div class="opt" onclick="ans(5,false,this)">⌨️ input()</div>
+      <div class="opt" onclick="ans(5,true,this)">🔊 print()</div>
+    </div>
+    <div class="ok-msg" id="msg5"><span>🌟</span> ¡Correcto! print() muestra información en la pantalla.</div>
+  </div>
+  <div class="card">
+    <div class="card-head"><div class="card-num green">B</div><h2>Desafío 6 ⭐</h2></div>
+    <div class="q-label">🤔 ¿Qué función <strong>PIDE</strong> que el usuario escriba algo?</div>
+    <div class="opt-grid">
+      <div class="opt" onclick="ans(6,true,this)">⌨️ input()</div>
+      <div class="opt" onclick="ans(6,false,this)">🔊 print()</div>
+    </div>
+    <div class="ok-msg" id="msg6"><span>🌟</span> ¡Correcto! input() pide que el usuario escriba datos.</div>
+  </div>
+</section>
+
+<!-- ══════════════ T4: OPERADORES ══════════════ -->
+<section class="section" id="t4">
+  <div class="card">
+    <div class="card-head"><div class="card-num">4</div><h2>Operadores matemáticos</h2></div>
+    <p class="big">Python puede hacer cuentas matemáticas igual que una calculadora. Estos son los <strong>operadores</strong>: los símbolos que usamos para hacer cuentas. ¡Toca cada uno para escuchar!</p>
+    <div class="info-box info-yellow">
+      <p>💡 <strong>¿Para qué sirven?</strong> Con los operadores le pedimos a Python que haga cuentas por nosotros. ¡Python calcula en un instante, sin importar qué tan difícil sea la cuenta!</p>
+    </div>
+
+    <!-- SUMA -->
+    <!-- OPERADORES CORREGIDOS CON AUDIO -->
+    <div class="op-detail">
+      <!-- SUMA -->
+      <div class="op-detail-row" style="cursor: pointer;" onclick="sayDirect('Suma. Junta dos números y da el total. Por ejemplo, si tenemos 3 camiones y llegan 5 más, en total hay 8.')">
+        <div class="op-big-sym" style="background:#fffbe6;color:#b88000;border:2px solid #f0d060">+</div>
+        <div class="op-detail-text">
+          <h4>➕ Suma</h4>
+          <p>Junta dos números y da el total. Por ejemplo, si tenemos 3 camiones y llegan 5 más, en total hay 8.</p>
+        </div>
+      </div>
+      
+      <!-- RESTA -->
+      <div class="op-detail-row" style="cursor: pointer;" onclick="sayDirect('Resta. Le quita un número a otro. Por ejemplo, si teníamos 10 litros de nafta y gastamos 4, quedan 6.')">
+        <div class="op-big-sym" style="background:#fff4e6;color:#9a4a00;border:2px solid #f0c090">−</div>
+        <div class="op-detail-text">
+          <h4>➖ Resta</h4>
+          <p>Le quita un número a otro. Por ejemplo, si teníamos 10 litros de nafta y gastamos 4, quedan 6.</p>
+        </div>
+      </div>
+      
+      <!-- MULTIPLICACIÓN -->
+      <div class="op-detail-row" style="cursor: pointer;" onclick="sayDirect('Multiplicar. Multiplica dos números. El símbolo en Python es el asterisco, no la equis. Por ejemplo, 3 por 4 es igual a 12. ')">
+        <div class="op-big-sym" style="background:#fff0f0;color:#a01010;border:2px solid #f0b0b0">*</div>
+        <div class="op-detail-text">
+          <h4>✖️ Multiplicar — se escribe con asterisco *</h4>
+          <p>Multiplica dos números. El símbolo en Python es el asterisco (*), no la X. Por ejemplo, 3 * 4 es igual a 12.</p>
+        </div>
+      </div>
+      
+      <!-- DIVISIÓN -->
+      <div class="op-detail-row" style="cursor: pointer;" onclick="sayDirect('Dividir. Reparte un número en partes iguales. El símbolo en Python es la barra. Por ejemplo, 10 dividido 2 es igual a 5.')">
+        <div class="op-big-sym" style="background:#e0f8f4;color:#0a6e5e;border:2px solid #90d8cc">/</div>
+        <div class="op-detail-text">
+          <h4>➗ Dividir — se escribe con barra /</h4>
+          <p>Reparte un número en partes iguales. El símbolo en Python es la barra (/). Por ejemplo, 10 / 2 es igual a 5.</p>
+        </div>
+      </div>
+    </div>
+
+    <span class="example-label">📄 Ejemplos en VS Code</span>
+    <div class="vscode-wrap">
+      <div class="vscode-header">
+        <div class="vscode-dots"><div class="vscode-dot red"></div><div class="vscode-dot yellow"></div><div class="vscode-dot green"></div></div>
+        <span class="vscode-filename">operadores.py</span>
+      </div>
+      <div class="code-block" onclick="sayDirect('Primer ejemplo: cuatro más seis es igual a diez, y lo guardamos en total. Segundo ejemplo: diez menos tres es igual a siete, y lo guardamos en resta. Tercer ejemplo: tres por cuatro, usando el asterisco, es igual a doce. Cuarto ejemplo: diez dividido dos, usando la barra, es igual a cinco.')">
+        <span class="ln">1</span><span class="cmt"># Suma (+)</span><br>
+        <span class="ln">2</span><span class="var">total</span> <span class="op">=</span> <span class="num">4</span> <span class="op">+</span> <span class="num">6</span>  &nbsp;<span class="cmt"># resultado: 10</span><br>
+        <span class="ln">3</span><span class="cmt"># Resta (-)</span><br>
+        <span class="ln">4</span><span class="var">resta</span> <span class="op">=</span> <span class="num">10</span> <span class="op">-</span> <span class="num">3</span>  <span class="cmt"># resultado: 7</span><br>
+        <span class="ln">5</span><span class="cmt"># Multiplicar (*) — usamos asterisco</span><br>
+        <span class="ln">6</span><span class="var">multi</span> <span class="op">=</span> <span class="num">3</span> <span class="op">*</span> <span class="num">4</span>   <span class="cmt"># resultado: 12</span><br>
+        <span class="ln">7</span><span class="cmt"># Dividir (/) — usamos barra</span><br>
+        <span class="ln">8</span><span class="var">divis</span> <span class="op">=</span> <span class="num">10</span> <span class="op">/</span> <span class="num">2</span>  <span class="cmt"># resultado: 5.0</span>
+      </div>
+    </div>
+
+    <span class="example-label green">🚚 Ejemplo con camiones</span>
+    <div class="vscode-wrap">
+      <div class="vscode-header">
+        <div class="vscode-dots"><div class="vscode-dot red"></div><div class="vscode-dot yellow"></div><div class="vscode-dot green"></div></div>
+        <span class="vscode-filename">camion_cuenta.py</span>
+      </div>
+      <div class="code-block" onclick="sayDirect('Un camión tiene dieciocho ruedas. Si hay tres camiones, cuántas ruedas hay en total? Tres por dieciocho, usando el asterisco, es igual a cincuenta y cuatro. Hay cincuenta y cuatro ruedas en total. ¡Python calculó eso al instante!')">
+        <span class="ln">1</span><span class="var">ruedas_por_camion</span> <span class="op">=</span> <span class="num">18</span><br>
+        <span class="ln">2</span><span class="var">cantidad_camiones</span> <span class="op">=</span> <span class="num">3</span><br>
+        <span class="ln">3</span><span class="var">total_ruedas</span> <span class="op">=</span> <span class="var">ruedas_por_camion</span> <span class="op">*</span> <span class="var">cantidad_camiones</span><br>
+        <span class="ln">4</span><span class="fn">print</span>(<span class="var">total_ruedas</span>)  <span class="cmt"># muestra: 54</span>
+      </div>
+    </div>
+
+    <div class="audio-row">
+      <button class="aud-btn aud-yellow" onclick="say(this,'Los operadores matemáticos son cuatro. El más para sumar, que en inglés se llama addition. El menos para restar, que en inglés se llama subtraction. El asterisco para multiplicar, que en inglés se llama multiplication. Y la barra para dividir, que en inglés se llama division. ¡Son los mismos de la matemática del cole, pero con símbolos un poco diferentes!')">
+        <span class="aud-ico">🔊</span> Resumen de los 4 operadores
+      </button>
+      <button class="aud-btn aud-orange" onclick="say(this,'Atención con multiplicar y dividir. Para multiplicar usamos el asterisco, que es como una estrellita. No usamos la X. Y para dividir usamos la barra, que está en el teclado. No usamos el símbolo de dividir del cole. ¡Eso es muy importante recordarlo!')">
+        <span class="aud-ico">⚠️</span> Cuidado con * y /
+      </button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><div class="card-num green">A</div><h2>Desafío 7 ⭐</h2></div>
+    <div class="q-label">🤔 ¿Cómo se escribe "dos más tres" en Python?</div>
+    <div class="opt-grid">
+      <div class="opt" onclick="ans(7,true,this)">2 + 3</div>
+      <div class="opt" onclick="ans(7,false,this)">2 × 3</div>
+    </div>
+    <div class="ok-msg" id="msg7"><span>🌟</span> ¡Correcto! El signo + suma dos números. El resultado es 5.</div>
+  </div>
+  <div class="card">
+    <div class="card-head"><div class="card-num green">B</div><h2>Desafío 8 ⭐</h2></div>
+    <div class="q-label">🤔 ¿Qué símbolo usamos para <strong>MULTIPLICAR</strong> en Python?</div>
+    <div class="opt-grid">
+      <div class="opt" onclick="ans(8,true,this)">* (asterisco)</div>
+      <div class="opt" onclick="ans(8,false,this)">× (equis)</div>
+    </div>
+    <div class="ok-msg" id="msg8"><span>🌟</span> ¡Correcto! El asterisco * multiplica. Por ejemplo: 3 * 4 = 12</div>
+  </div>
+  <div class="card">
+    <div class="card-head"><div class="card-num green">C</div><h2>Desafío 9 ⭐</h2></div>
+    <div class="q-label">🤔 Un camión tiene 18 ruedas. ¿Cómo calculamos cuántas ruedas tienen 2 camiones?</div>
+    <div class="opt-grid">
+      <div class="opt" onclick="ans(9,true,this)">18 * 2</div>
+      <div class="opt" onclick="ans(9,false,this)">18 + 2</div>
+    </div>
+    <div class="ok-msg" id="msg9"><span>🌟</span> ¡Correcto! 18 * 2 = 36 ruedas en total. ¡Multiplicamos para saber el total!</div>
+  </div>
+  <div class="card">
+    <div class="card-head"><div class="card-num green">C</div><h2>Desafío 10 ⭐</h2></div>
+    <div class="q-label">🤔 Dos camiones tienen 8 ruedas en total. ¿Qué operación usamos para saber cuántas ruedas tiene cada camión?</div>
+    <div class="opt-grid">
+      <div class="opt" onclick="ans(10,true,this)">8 ÷ 2</div>
+      <div class="opt" onclick="ans(10,false,this)">8 + 2</div>
+    </div>
+    <div class="ok-msg" id="msg10"><span>🌟</span> ¡Correcto! 8 / 2 = 4. Cada camión tiene 4 ruedas.</div>
+</div>
+</section>
+
+<!-- ══════════════ T5: COMPARACIONES ══════════════ -->
+<section class="section" id="t5">
+  <div class="card">
+    <div class="card-head"><div class="card-num">5</div><h2>Comparaciones</h2></div>
+    <p class="big">Python puede <strong>comparar</strong> dos números y decir si es verdadero o falso. ¡Toca cada símbolo para escuchar!</p>
+    <div class="info-box info-blue">
+      <p>💡 <strong>¿Para qué sirven?</strong> Las comparaciones nos ayudan a preguntarle cosas a Python. "¿Este número es mayor?" "¿Son iguales?" Python responde <strong>True</strong> (verdadero) o <strong>False</strong> (falso).</p>
+    </div>
+    <div class="info-box info-yellow" style="margin-top:10px">
+      <p> <strong>True</strong> significa <strong>Verdadero</strong> en inglés. <strong>False</strong> significa <strong>Falso</strong> en inglés.</p>
+    </div>
+
+    <div class="op-grid" style="margin-top:16px">
+      <div class="op-box op-yellow" onclick="sayDirect('Mayor que. Se escribe con el signo mayor, que es una V acostada apuntando a la derecha. Significa que el primer número es más grande que el segundo. Por ejemplo, nueve mil mayor que cuatro mil es verdadero, porque nueve mil es más grande.')">
+        <span class="op-sym">&gt;</span>
+        <h3>Mayor que</h3>
+      </div>
+      <div class="op-box op-teal" onclick="sayDirect('Menor que. Se escribe con el signo menor, que apunta a la izquierda. Significa que el primer número es más chico que el segundo. Por ejemplo, tres menor que diez es verdadero. ')">
+        <span class="op-sym">&lt;</span>
+        <h3>Menor que</h3>
+      </div>
+      <div class="op-box op-orange" onclick="sayDirect('Igual igual. Son dos signos igual juntos. Se usa para preguntar si dos valores son exactamente iguales. Cuidado, no es el igual de guardar que es un solo signo, estos son dos signos igual juntos.')">
+        <span class="op-sym">==</span>
+        <h3>Igual a</h3>
+      </div>
+      <div class="op-box op-coral" onclick="sayDirect('Diferente de. Se escribe con un signo de exclamación y después el igual. Significa que dos valores no son iguales. Por ejemplo, seis diferente de diez es verdadero, porque seis y diez son distintos.')">
+        <span class="op-sym">!= (≠)</span>
+        <h3>Diferente</h3>
+      </div>
+    </div>
+
+    <div class="sintaxis-box">
+      <h4>📌 ¡Importante! = y == son diferentes</h4>
+      <div class="sintaxis-row">
+        <span class="sx-piece sx-orange">=</span>
+        <span class="sx-arrow">→</span>
+        <span class="sx-piece sx-gray">guarda un valor (una sola vez)</span>
+      </div>
+      <div class="sintaxis-row">
+        <span class="sx-piece sx-blue">==</span>
+        <span class="sx-arrow">→</span>
+        <span class="sx-piece sx-gray">pregunta si son iguales (dos veces)</span>
+      </div>
+    </div>
+
+    <span class="example-label">📄 Ejemplos en VS Code</span>
+    <div class="vscode-wrap">
+      <div class="vscode-header">
+        <div class="vscode-dots"><div class="vscode-dot red"></div><div class="vscode-dot yellow"></div><div class="vscode-dot green"></div></div>
+        <span class="vscode-filename">comparaciones.py</span>
+      </div>
+      <div class="code-block" onclick="sayDirect('Primer ejemplo: nueve mil mayor que cuatro mil. Python responde True, que significa verdadero. Segundo ejemplo: tres menor que diez. Python responde True, verdadero. Tercer ejemplo: cinco igual igual cinco. Python responde True, son iguales. Cuarto ejemplo: seis distinto de diez. Python responde True, son diferentes.')">
+        <span class="ln">1</span><span class="num">9000</span> <span class="op">&gt;</span> <span class="num">4000</span>   <span class="cmt"># True   (9000 es mayor)</span><br>
+        <span class="ln">2</span><span class="num">3</span> <span class="op">&lt;</span> <span class="num">10</span>     &nbsp;&nbsp;&nbsp;<span class="cmt"># True   (3 es menor)</span><br>
+        <span class="ln">3</span><span class="num">5</span> <span class="op">==</span> <span class="num">5</span>    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt"># True   (son iguales)</span><br>
+        <span class="ln">4</span><span class="num">6</span> <span class="op">!=</span> <span class="num">10</span>   &nbsp;&nbsp;&nbsp;<span class="cmt"># True   (son diferentes)</span><br>
+        <span class="ln">5</span><span class="num">5</span> <span class="op">==</span> <span class="num">8</span>    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cmt"># False  (no son iguales)</span>
+      </div>
+    </div>
+
+    <span class="example-label green">🚚 Ejemplo con camiones</span>
+    <div class="vscode-wrap">
+      <div class="vscode-header">
+        <div class="vscode-dots"><div class="vscode-dot red"></div><div class="vscode-dot yellow"></div><div class="vscode-dot green"></div></div>
+        <span class="vscode-filename">peso_camion.py</span>
+      </div>
+      <div class="code-block" onclick="sayDirect('Guardamos el peso del camión en nueve mil. Después preguntamos si nueve mil es mayor que cuatro mil. Python responde True, verdadero. El camión pesa más que el límite.')">
+        <span class="ln">1</span><span class="var">peso</span> <span class="op">=</span> <span class="num">9000</span><br>
+        <span class="ln">2</span><span class="var">limite</span> <span class="op">=</span> <span class="num">4000</span><br>
+        <span class="ln">3</span><span class="fn">print</span>(<span class="var">peso</span> <span class="op">&gt;</span> <span class="var">limite</span>)  <span class="cmt"># muestra: True</span><br>
+        <span class="ln">4</span><span class="cmt"># ¡El camión pesa más que el límite!</span>
+      </div>
+    </div>
+
+    <div class="audio-row">
+      <button class="aud-btn aud-blue" onclick="say(this,'Las comparaciones son cuatro. El mayor que, que en inglés se dice greater than. El menor que, que en inglés se dice less than. El igual igual, que en inglés se dice equal to, y usa dos signos igual juntos. Y el diferente, que en inglés se dice not equal to, y usa el signo de exclamación con el igual. Python siempre responde True, que es verdadero, o False, que es falso.')">
+        <span class="aud-ico">🔊</span> Resumen de comparaciones
+      </button>
+      <button class="aud-btn aud-purple" onclick="say(this,'Atención con el igual y el igual igual. Cuando usamos un solo signo igual, estamos guardando un valor. Cuando usamos dos signos igual juntos, estamos preguntando si dos cosas son iguales. Son muy diferentes aunque se parecen. ¡Hay que tener cuidado!')">
+        <span class="aud-ico">⚠️</span> = vs ==
+      </button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><div class="card-num green">A</div><h2>Desafío 10 ⭐</h2></div>
+    <div class="q-label">🤔 ¿Cuál expresión dice que "peso es <strong>MENOR</strong> que 5000"?</div>
+    <div class="opt-grid">
+      <div class="opt" onclick="ans(10,true,this)">peso &lt; 5000</div>
+      <div class="opt" onclick="ans(10,false,this)">peso &gt; 5000</div>
+    </div>
+    <div class="ok-msg" id="msg10"><span>🌟</span> ¡Correcto! El &lt; significa menor que. El peso es menor que 5000.</div>
+  </div>
+  <div class="card">
+    <div class="card-head"><div class="card-num green">B</div><h2>Desafío 11 ⭐</h2></div>
+    <div class="q-label">🤔 ¿Cuál de estas comparaciones es verdadera (True)?</div>
+    <div class="opt-grid">
+      <div class="opt" onclick="ans(11,true,this)">9000 &gt; 4000 </div>
+      <div class="opt" onclick="ans(11,false,this)">9000 &lt; 4000 </div>
+    </div>
+    <div class="ok-msg" id="msg11"><span>🌟</span> ¡Correcto! 9000 es mayor que 4000. Python dice True.</div>
+  </div>
+  <div class="card">
+    <div class="card-head"><div class="card-num green">C</div><h2>Desafío 12 ⭐</h2></div>
+    <div class="q-label">🤔 ¿Qué símbolo usamos para preguntar si dos valores son <strong>exactamente iguales</strong>?</div>
+    <div class="opt-grid">
+      <div class="opt" onclick="ans(12,false,this)">=</div>
+      <div class="opt" onclick="ans(12,true,this)">==</div>
+    </div>
+    <div class="ok-msg" id="msg12"><span>🌟</span> ¡Correcto! == (dos iguales) pregunta si son iguales. Un solo = guarda un valor.</div>
+  </div>
+ 
+  <div class="card">
+    <div class="card-head"><div class="card-num green">E</div><h2>Desafío 13 ⭐</h2></div>
+    <div class="q-label">🤔 Un camión tiene 18 ruedas. ¿El resultado de <strong>18 == 18</strong> es…?</div>
+    <div class="opt-grid">
+      <div class="opt" onclick="ans(14,true,this)">True (Verdadero) </div>
+      <div class="opt" onclick="ans(14,false,this)">False (Falso) </div>
+    </div>
+    <div class="ok-msg" id="msg14"><span>🌟</span> ¡Correcto! 18 es igual a 18, entonces es True, o sea, Verdadero.</div>
+  </div>
+  <div class="card">
+    <div class="card-head"><div class="card-num green">E</div><h2>Desafío 14 ⭐</h2></div>
+    <div class="q-label">🤔 Un camión tiene 18 ruedas. ¿El resultado de <strong>18 != 20</strong> es…?</div>
+    <div class="opt-grid">
+      <div class="opt" onclick="ans(15,true,this)">True (Verdadero)</div>
+      <div class="opt" onclick="ans(15,false,this)">False (Falso)</div>
+    </div>
+    <div class="ok-msg" id="msg15"><span>🌟</span> ¡Correcto! 18 es distinto de 20, entonces es True, o sea, Verdadero.</div>
+</div>
+</section>
+
+</main>
+</div>
+
+<!-- POPUPS -->
+<div class="overlay" id="overlay">
+  <div class="popup">
+    <span class="popup-ico" id="pico">⭐</span>
+    <h2 id="ptit">¡Muy bien!</h2>
+    <p id="ptxt">Seguimos aprendiendo.</p>
+    <button onclick="closeP()">¡Siguiente! →</button>
+  </div>
+</div>
+
+<div class="overlay" id="voiceOverlay">
+  <div class="vpick">
+    <h3>🎙 Elegí una voz para Miqueas</h3>
+    <div class="voice-list" id="voiceList"></div>
+    <button class="vpick-close" onclick="closeVP()">Listo ✓</button>
+  </div>
+</div>
+
+<script>
+/* ── VOICE ENGINE ── */
+let allVoices=[], chosenVoice=null, speakingBtn=null;
+
+function getVoices(){
+  allVoices=speechSynthesis.getVoices();
+  if(!allVoices.length)return;
+  let score=v=>{
+    let s=0;
+    let n=(v.name+v.lang).toLowerCase();
+    if(v.lang.startsWith('es'))s+=40;
+    if(n.includes('sabina')||n.includes('mónica')||n.includes('monica')||n.includes('lucia')||n.includes('lucía')||n.includes('paulina')||n.includes('valeria')||n.includes('valentina'))s+=30;
+    if(n.includes('female')||n.includes('mujer')||n.includes('femenin'))s+=20;
+    if(n.includes('argentina')||n.includes('ar-'))s+=15;
+    if(n.includes('google'))s+=5;
+    if(n.includes('natural')||n.includes('neural'))s+=8;
+    return s;
+  };
+  let sorted=[...allVoices].sort((a,b)=>score(b)-score(a));
+  if(!chosenVoice) chosenVoice=sorted[0]||allVoices[0];
+  updateVoiceLabel();
+}
+speechSynthesis.onvoiceschanged=getVoices;
+getVoices();
+
+function updateVoiceLabel(){
+  if(!chosenVoice)return;
+  let n=chosenVoice.name.length>28?chosenVoice.name.slice(0,26)+'…':chosenVoice.name;
+  document.getElementById('voiceLabel').textContent=n;
+}
+
+function getParams(){
+  if(!chosenVoice)return{rate:.82,pitch:1.15};
+  let n=(chosenVoice.name+chosenVoice.lang).toLowerCase();
+  if(n.includes('google'))return{rate:.80,pitch:1.12};
+  if(n.includes('microsoft'))return{rate:.78,pitch:1.10};
+  return{rate:.76,pitch:1.18};
+}
+
+function sayDirect(text){
+  speechSynthesis.cancel();
+  if(speakingBtn){speakingBtn.classList.remove('speaking');speakingBtn=null}
+  _speak(text);
+}
+
+function say(btn,text){
+  speechSynthesis.cancel();
+  if(speakingBtn)speakingBtn.classList.remove('speaking');
+  speakingBtn=btn;btn.classList.add('speaking');
+  let u=new SpeechSynthesisUtterance(text);
+  let p=getParams();
+  u.voice=chosenVoice;
+  u.lang=chosenVoice?.lang||'es-AR';
+  u.rate=p.rate; u.pitch=p.pitch;
+  u.onend=()=>{btn.classList.remove('speaking');if(speakingBtn===btn)speakingBtn=null};
+  u.onerror=()=>btn.classList.remove('speaking');
+  speechSynthesis.speak(u);
+}
+
+function _speak(text){
+  let u=new SpeechSynthesisUtterance(text);
+  let p=getParams();
+  u.voice=chosenVoice;
+  u.lang=chosenVoice?.lang||'es-AR';
+  u.rate=p.rate; u.pitch=p.pitch;
+  speechSynthesis.speak(u);
+}
+
+/* ── VOICE PICKER ── */
+function openVoicePicker(){
+  let list=document.getElementById('voiceList');
+  list.innerHTML='';
+  let esVoices=allVoices.filter(v=>v.lang.startsWith('es'));
+  let others=allVoices.filter(v=>!v.lang.startsWith('es')).slice(0,10);
+  let show=esVoices.length>0?[...esVoices,...others.slice(0,4)]:allVoices.slice(0,16);
+  show.forEach(v=>{
+    let d=document.createElement('div');
+    d.className='v-item'+(v===chosenVoice?' selected':'');
+    d.innerHTML=`<span style="font-size:1.2rem">${v.lang.startsWith('es')?'🇦🇷':'🌐'}</span>
+      <span style="flex:1">${v.name}</span>
+      <span class="v-badge">${v.lang}</span>`;
+    d.onclick=()=>{
+      chosenVoice=v;
+      list.querySelectorAll('.v-item').forEach(x=>x.classList.remove('selected'));
+      d.classList.add('selected');
+      updateVoiceLabel();
+      setTimeout(()=>sayDirect('Hola Miqueas, esta es mi nueva voz. ¿Te gusta?'),100);
+    };
+    list.appendChild(d);
+  });
+  document.getElementById('voiceOverlay').classList.add('show');
+}
+function closeVP(){document.getElementById('voiceOverlay').classList.remove('show')}
+
+/* ── PROGRESS ── */
+let done={1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0,10:0,11:0,12:0,13:0,14:0};
+
+function upProg(){
+  let n=Object.values(done).filter(Boolean).length;
+  let total=Object.keys(done).length;
+  document.getElementById('pbar').style.width=(n/total*100)+'%';
+  document.getElementById('plab').textContent=n+' de '+total;
+  let s='';for(let i=0;i<n;i++)s+='⭐';
+  document.getElementById('starsRow').textContent=s||'⭐';
+  if(n===total){
+    setTimeout(()=>showP('🏆','¡Lo hiciste Miqueas!','Terminaste todos los desafíos. ¡Sos un programador de Python!'),400);
+    _speak('¡Felicitaciones, Miqueas! Completaste todos los desafíos. Sos un verdadero programador de Python. ¡Estás increíble!');
+  }
+}
+
+/* ── NAVIGATION ── */
+let greetings={
+  intro:'¡Bienvenido, Miqueas! Estamos en el inicio. Toca cualquier botón para escuchar y aprender.',
+  t1:'¡Vamos a los tipos de datos! Hay tres: texto, que se llama String en inglés; número entero, que se llama Integer; y número decimal, que se llama Float. Toca los cuadros de colores para escuchar cada uno.',
+  t2:'¡Ahora las variables! Son como cajitas para guardar información. Usamos el signo igual para guardar. Toca el código para escuchar cómo funciona.',
+  t3:'¡Print e Input! Print, que significa imprimir en inglés, muestra cosas en pantalla. Input, que significa entrada en inglés, pide información al usuario. Toca las tarjetas para escuchar.',
+  t4:'¡Los operadores matemáticos! Tenemos suma, resta, multiplicar con el asterisco, y dividir con la barra. Toca cada operador para escuchar cómo funciona.',
+  t5:'¡Las comparaciones! Mayor que, menor que, igual igual, y diferente. Python responde True que es verdadero, o False que es falso. Toca los símbolos para escuchar.'
+};
+
+function go(id){
+  speechSynthesis.cancel();
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('nb-'+id).classList.add('active');
+  if(greetings[id])setTimeout(()=>_speak(greetings[id]),350);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* ── QUIZ ── */
+let congrats=[
+  '','¡Muy bien, Miqueas! Lo hiciste genial.','¡Eso es! ¡Qué inteligente sos!',
+  '¡Fantástico! Aprendiste eso muy rápido.','¡Perfecto! Seguís aprendiendo muy bien.',
+  '¡Qué bien! Estás entendiendo todo.','¡Genial, Miqueas! Así se hace.',
+  '¡Excelente! Sos un crack de Python.','¡Increíble! Lo lograste.',
+  '¡Brillante! Cada vez sabés más.','¡Asombroso! Casi terminaste.',
+  '¡Lo hiciste! Muy bien, Miqueas.','¡Fantástico! Seguís adelante.',
+  '¡Genial! Ya sabés inglés y Python.','¡Felicitaciones, Miqueas! Terminaste todos los desafíos.'
+];
+
+function ans(id,ok,el){
+  if(done[id])return;
+  if(ok){
+    done[id]=1;
+    el.classList.add('ok');
+    let m=document.getElementById('msg'+id);m.classList.add('show');
+    upProg();
+    let txt=m.textContent.replace(/[🌟]/g,'').trim();
+    _speak(txt);
+    setTimeout(()=>showP('⭐',congrats[id],'¡Seguí así! Vas muy bien.'),700);
+  }else{
+    el.classList.add('shake','no');
+    _speak('Mmm, no es esa. Pensalo de nuevo, vos podés.');
+    setTimeout(()=>el.classList.remove('shake','no'),700);
+  }
+}
+
+function fillSlot(sid,id,val){
+  let el=document.getElementById(sid);
+  if(el.classList.contains('done'))return;
+  el.innerHTML=val; el.classList.add('done');
+  done[id]=1;
+  let m=document.getElementById('msg'+id); m.classList.add('show');
+  upProg();
+  _speak('¡Correcto! El signo igual guarda la información dentro de la cajita. ¡Muy bien, Miqueas!');
+  setTimeout(()=>showP('📦','¡Lo encontraste!','Aprendiste a guardar datos en una variable.'),500);
+}
+
+function showP(ico,tit,txt){
+  document.getElementById('pico').textContent=ico;
+  document.getElementById('ptit').textContent=tit;
+  document.getElementById('ptxt').textContent=txt;
+  document.getElementById('overlay').classList.add('show');
+}
+function closeP(){document.getElementById('overlay').classList.remove('show')}
+</script>
+</body>
+</html>
